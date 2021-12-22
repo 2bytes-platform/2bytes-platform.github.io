@@ -1,7 +1,7 @@
 ---
 layout: post
-title: "📅 testing"
-excerpt: "github pages 이용하여 웹사이트 구성하기"
+title: "📅 github pages를 이용한 정적 웹사이트 구성하기"
+excerpt: "github pages 이용하여 웹사이트 구성해보자"
 subtitle: ""
 toc: true
 toc_sticky: true
