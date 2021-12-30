@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "📅 Kotlin 강의노트-1"
+title: "📅 Kotlin 강의노트-2"
 excerpt: "JetBrains Academy에서 제공하는 Kotlin 교육 프로그램 강의 노트입니다."
 subtitle: "Project: Simple Chatty Bot"
 toc: true
