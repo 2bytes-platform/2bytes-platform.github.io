@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "📅 Kotlin in Action - 2장 요약"
+title: "📅 Kotlin in Action - 2장 ②"
 excerpt: "Kotlin in Action 2장 요약 노트입니다."
 subtitle: "Kotlin in Action"
 toc: true
@@ -98,7 +98,25 @@ fun mixOptimized(c1: Color, c2: Color) =
     }
 
 println(mixOptimized()(BLUE, YELLOW)) // GREEN
+
+// 
+fun main() {
+	println(doWhen(1))
+}
+
+fun doWhen (a: Any): String { // 출력값 타입을 지정하지 않은 경우 Type mismatch: inferred type is String but Unit was expected
+	var result = when(a) {
+		1 -> "1"
+		"Sasha" -> "사샤"
+		else -> "유효한 값을 입력하십시오"
+	}
+	return result
+}
+
 ```
+
+
+
 
 #### 2.3.5 스마트 캐스트: 타입 검사와 타입 캐스를 조합 - 보류 
 - 스마트캐스트: 굳이 변수를 원하는  타입으로 캐스팅하지 않아도 마치 처음부터 그 변수가 원하는 타입으로 선언된 것처럼

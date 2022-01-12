@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "📅 Kotlin in Action - 2장 요약"
+title: "📅 Kotlin in Action - 2장 ③"
 excerpt: "Kotlin in Action 2장 요약 노트입니다."
 subtitle: "Kotlin in Action"
 toc: true
@@ -36,8 +36,6 @@ do {
 ```kotlin
 val oneToTwenty = 1..20
 ```
-
-- fizzBuzz 게임 생성
 ```kotlin
 // when을 사용해 fizzBuzz 게임 구현하기
 fun fizzBuzz(i: Int) = when {

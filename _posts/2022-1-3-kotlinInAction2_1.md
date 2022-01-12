@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "📅 Kotlin in Action - 2장 요약"
+title: "📅 Kotlin in Action - 2장 ①"
 excerpt: "Kotlin in Action 2장 요약 노트입니다."
 subtitle: "Kotlin in Action"
 toc: true
@@ -10,7 +10,7 @@ date: 2022-1-3
 tags: [Kotlin]
 ---
 
-### 2.1 기본 요소: 함수와 변수
+## 2.1 기본 요소: 함수와 변수
 
 #### 2.1.1 Hello, World!
 
@@ -80,11 +80,12 @@ fun main(args: Array<String>) {
 
 ### 2.2 클래스와 프로퍼티
 - 간단한 자바빈 클래스인 Person을 정의했으며, name 이라는 프로퍼티만 들어있음
-```java
+
+```
 public class Person {
     private final String name;
     public class Person(String name) {
-        this.name = name;
+        this.name = name
     }
     public String getName() {
         return name;
