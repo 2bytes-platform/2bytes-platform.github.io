@@ -6,7 +6,7 @@ subtitle: "Kotlin in Action"
 toc: true
 toc_sticky: true
 toc_label: "페이지 주요 목차"
-date: 2022-1-3
+date: 2022-1-6
 tags: [Kotlin]
 ---
 
@@ -114,9 +114,6 @@ fun doWhen (a: Any): String { // 출력값 타입을 지정하지 않은 경우 
 }
 
 ```
-
-
-
 
 #### 2.3.5 스마트 캐스트: 타입 검사와 타입 캐스를 조합 - 보류 
 - 스마트캐스트: 굳이 변수를 원하는  타입으로 캐스팅하지 않아도 마치 처음부터 그 변수가 원하는 타입으로 선언된 것처럼

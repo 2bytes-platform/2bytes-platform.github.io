@@ -1,12 +1,12 @@
 ---
 layout: post
-title: "📅 Kotlin 강의노트- 변수와 Naming convention"
-excerpt: "Kotlin in Action 2장 요약 노트입니다."
-subtitle: "Kotlin in Action"
+title: "📅 Kotlin 강의노트 - 15강까지"
+excerpt: "디모의 Kotlin 강좌 요약본입니다 "
+subtitle: "Kotlin youtube lecture"
 toc: true
 toc_sticky: true
 toc_label: "페이지 주요 목차"
-date: 2022-1-3
+date: 2022-1-11
 tags: [Kotlin]
 ---
 
@@ -206,13 +206,59 @@ fun b (function: (String) -> Unit) {
     function("b가 호출한") 
 }
 ```
-
-#### 스코프 함수
-
+- 람다식에 여러 줄 입력 가능 
 ```kotlin
 val c = {str: String -> 
 	println("${str}람다함수")
     println("${str}익명함수였네")
     println("${str}단어에 쫄 필요없어")
 }
+```
+
+#### 스코프 함수
+
+- 인스턴스의 속성이나 함수를 scope 내에서 깔끔하게 분리하여 사용할 수 있게 만들어 코드의 가독성 향상
+
+- apply
+  - 인스턴스를 생성하고, 변수에 담기 전 초기화 과정을 수행할 때 사용. 인스턴스 자신을 다시 반환
+  - main 함수와 별도의 scope에서 인스턴스의 변수와 함수를 조작하므로 코드가 깔끔해짐
+
+- run
+    - 인스턴스 생성 후, 인스턴스의 함수나 속성을 스코프 내에서 사용할 때 사용
+    - 참조연산자를 사용하지 않아도 됨. 마지막 구문을 반환
+
+- with
+    - run과 같지만, 인스턴스를 인자로 받는다는 차이
+
+- also (=apply)/let (=run)
+    - 'it'을 통해서 인스턴스를 사용
+
+```kotlin
+fun main() {
+	var price = 5000
+
+	var a = Book("사샤의 코틀린", 30000).apply {
+		name = "[초특가]" + name
+		discount()
+	}
+
+	a.run {
+		println("상품명: ${name}, 가격: ${price}원")
+	} // 상품명: [초특가]사샤의 코틀린, 가격: 28000원
+
+	with(a) {
+		println("상품명: ${name}, 가격: ${price}원")
+	} // 상품명: [초특가]사샤의 코틀린, 가격: 28000원
+
+	a.let {
+		println("상품명: ${it.name}, 가격: ${it.price}원")
+	} // 상품명: [초특가]사샤의 코틀린, 가격: 28000원
+}
+
+class Book(var name: String, var price: Int) {
+	fun discount() {
+		price -= 2000
+	}
+}
+// 같은 이름의 함수나 변수가 scope 바깥에 중복되어 있는 경우에 혼란을 방지 
 ```

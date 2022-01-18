@@ -6,7 +6,7 @@ subtitle: "Kotlin in Action"
 toc: true
 toc_sticky: true
 toc_label: "페이지 주요 목차"
-date: 2022-1-3
+date: 2022-1-8
 tags: [Kotlin]
 ---
 
