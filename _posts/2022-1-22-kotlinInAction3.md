@@ -132,8 +132,8 @@ fun main() {
     val list = listOf(1,2,3)
     println(joinToString(list, "; ", "(", ")"))
 }
-fun <T> collection<T> joinToString (
-    separator: String = ", ",
+fun <T> collection<T> join,ToString (
+    separator: String = ", "
     prefix: String = "",
     postfix: String = ""
 ): String {
@@ -150,4 +150,32 @@ fun <T> collection<T> joinToString (
 
 #### 3.3.4 확장 함수는 오버라이드 불가
 
-- 
+```kotlin
+fun main() {
+    val view: View = Button()
+    view.click() // Button clicked -> 오버라이드o 
+    view.showOff() // Sasha -> 오버라이드x
+}
+
+open class View {
+    open fun click() = println("View clicked")
+}
+class Button: View() {
+    override fun click() = println("Button clicked")
+}
+fun View.showOff() = println("Sasha")
+fun Button.showOff() = println("Lisa")
+
+``` 
+> dynamic dispatch (동적 디스패치): **실행** 시점에 객체 타입에 따라 동적으로 호출될 대상 메소드를 결정하는 방식  
+> static dispatch (정적 디스패치): **컴파일** 시점에 알려진 변수 타입에 따라 정해진 메서드를 호출하는 방식
+
+
+#### 3.3.5 확장 프로퍼티
+
+- 기존 클래스 객체에 대한 프로퍼티 형식의 구문으로 사용할 수 있는 API를 추가
+
+```kotlin
+val String.lastChar: Char
+get() = get(length - 1)
+```
