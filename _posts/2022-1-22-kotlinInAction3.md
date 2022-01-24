@@ -176,6 +176,92 @@ fun Button.showOff() = println("Lisa")
 - 기존 클래스 객체에 대한 프로퍼티 형식의 구문으로 사용할 수 있는 API를 추가
 
 ```kotlin
-val String.lastChar: Char
-get() = get(length - 1)
+// 확장 프로퍼티 선언
+val StringBuilder.lastChar: Char
+get() = get(length - 1) // 프로퍼티 게터
+set(value: Char) {
+	this.setCharAt(length - 1. value) // 프로퍼티 세터
+}
+```
+
+### 3.4 컬렉션 처리: 가변 길이 인자, 중위 함수 호출, 라이브러리 지원
+
+- vararg 키워드 사용 및 호출 시, 인자 개수가 달리질 수 있는 함수를 정의
+- infix(중위) 함수 호출 구문 사용 시, 하나의 인자를 갖는 메소드를 간편하게 호출
+- destructuring declaration(구조 분해 선언) 사용 시, 복합적인 값을 분해해서 다수의 변수에 할당 가능
+
+#### 3.4.2 가변 인자 함수: 인자의 개수가 달라질 수 있는 함수 정의
+
+- 가변 길이 인자: 메소드를 호출할 때 원하는 개수만큼 값을 인자로 넘기면 자바 컴파일러가 배열에 그 값들을 넣어주는 기능
+- 스프레드 연산자: 배열 앞에 *를 붙여주면 이용 가능. 그러나 자바에서 사용 불가
+```kotlin
+fun main(args: Array<String>) {
+	val list = listOf("args: ", *args)
+	println(list)
+}
+```
+
+#### 3.4.3 값의 쌍 다루기: 중위 호출과 구조 분해 선언
+
+- infix call (중위 호출): 일반적인 함수 호출 식을 간략하게 나타낸 방법. 인자가 하나뿐인 일반 메서드 or 확장 함수에만 사용 가능
+- destructuring declaration (구조 분해 선언): js의 구조 분해 할당과 유사
+```kotlin
+val map = mapOf(1 to "one", 7 to "seven", 53 to "fifty-three")
+1.to("one") // 확장 함수 to를 일반적인 방식으로 호출
+1 to "one" // 중위 호출 
+
+val (number, name) = 1 to "one" // 구조 분해 선언 number == 1, name == "one"
+```
+
+### 3.5 문자열과 정규식 다루기
+
+#### 3.5.1 문자열 나누기
+
+- 코틀린 정규식 문법은 자바와 같으며, 확장함수를 이용하여 더욱 간편하게 나타냄
+```kotlin
+println("12.345-6.A".split("\\.|-".toRegex())) // 정규식 이용
+println("12.345-6+A".split('.', '-')) // 확장함수 이용
+```
+
+#### 3.5.2 정규식과 3중 따옴표로 묶은 문자열
+
+- 3중 따옴표 문자열에서는 역슬래시를 포함한 어떤 문자로 이스케이프 필요없음
+- 
+```kotlin
+fun main() {
+	parsePath("/User/yole/kotlin-book/chapter.adoc")
+}
+
+fun parsePath(path: String) {
+	val regex = """(.+)/(.+)\.(.+)""".toRegex() // (.+): 디렉터리, 파일이름, 확장자를 나타낸다
+    val matchResult = regex.matchEntire(path)
+    
+    if(matchResult != null) {
+        val (directory, filename, extension) = matchResult.destructured
+        println("Dir: ${directory}, name: ${filename}, ext: ${extension}")
+    }
+}
+```
+### 3.6 코드 다듬기: 로컬 함수와 확장
+
+- 코틀린에서는 함수에서 추출한 로컬 함수를 원 함수 내부에 중첩시켜 DRY(코드중복)를 지향
+
+```kotlin
+class User(val id: Int, val name: String, val address: String)
+
+fun	User.validateBeforeSave() {
+	fun validate(value: String, fieldName: String) { // 로컬함수 정의
+		if(value.isEmpty()) {
+			throw IllegalArgumentException("Can't save user ${id}: " + "empty $fieldName")
+		}
+
+	}
+	// 로컬함수를 호출해서 각 필드를 검증
+	validate(name, "Name")
+	validate(address, "Address") 
+}
+
+fun saveUser(user: User) {
+	user.validateBeforeSave() // 확장함수 호출
+}
 ```
