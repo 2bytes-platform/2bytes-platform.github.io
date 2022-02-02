@@ -80,5 +80,103 @@ abstract class Animated { // 추상클래스, 인스턴스를 만들 수 없음
 #### 4.1.3 가시성 변경자: 기본적으로 공개
 
 - Visibility modifier는 코드 기반에 있는 선언에 대한 클래스 외부 접근을 제어 -> 해당 클래스에 의존하는 외부 코드를 꺠지 않고 
-클래스 내부구현 변경가능
+클래스 내부구현 변경가능 -> encapsulation(캡슐화) 의의
 
+- internal: 코틀린에 도입된 새로운 가시성 변경자. 모듈 내부에서만 볼 수 있으며, 모듈이란 한번에 한꺼번에 컴파일되는 코틀린
+파일을 의미 
+
+- 최상위 선언에 대해 private 가시성을 허용하여, 그 선언이 들어있는 파일 내부에서만 사용가능
+
+- kotlin 가시성 변경자
+
+| 변경자               | 클래스 멤버             |             최상위 선언              |
+|-------------------|:-------------------|:-------------------------------:|
+| `public(default)` | 모든 곳에서 볼 수 있음      |         클래스 멤버의 기본 변경자          |
+| `internal`        | 같은 모듈 안에서만 볼 수 있음  |     반드시 open을 명시해야 오버라이드 가능     | 
+| `protected`       | 하위 클래스 안에서만 볼 수 있음 | 추상 클래스의 멤버에만 사용 가능. 추상 멤버에는 구현X | 
+| `private`         | 같은 클래스 안에서만 볼 수 있음 |     오버라이드하는 멤버는 기본적으로 열려있음      |
+
+
+```kotlin
+internal open class TalkativeButton : Focusable {
+    private fun yell() = println("Sasha!")
+    protected fun whisper() = println("Let's talk!")
+}
+
+fun TalkativeButton.giveSpeech() { //public 함수인 giveSpeech 안에서 internal 수신 타입인 TalkativeButton을 참조X
+    yell() // yell은 TalkativeButton의 private 멤버로 접근 불가
+    whisper() // whisper는 TalkativeButton의 protected 멤버로 접근 불가
+}
+```
+> 컴파일 오류를 해결하려면 확장 함수 giveSpeech 가시성을 internal로 바꾸거나, TalkativeButton 클래스의 가시성을 public으로 변경
+
+- kotlin에서 protected 멤버는 어떤 클래스나 그 클래스를 상속한 클래스 안에서만 보임
+- kotlin에서 외부 클래스가 내부 클래스나 중첩된 클래스의 private 멤버에 접근할 수 없음
+
+#### 4.1.4 내부 클래스와 중첩된 클래스: 기본적으로 중첩 클래스
+
+- 클래스 안에 다른 클래스 선언이 가능하며 도우미 클래스를 캡슐화하거나 코드 정의를 사용하는 곳 근처에 두고 싶을 때 유용
+```kotlin
+interface State: Serializable
+interface View {
+    fun getCurrentState(): State
+    fun restoreState(state: State) {}
+}
+
+// 중첩 클래스를 사용해 코틀린에서 view 구현
+class Button : View {
+    override fun getCurrentState(): State = ButtonState()
+    override fun restoreState(state: State) {super.restoreState(state)}
+    class ButtonState: State {}
+}
+```
+- Inner 클래스 안에서 Outer 클래스의 참조에 접근하는 방법은 다음과 같다
+```kotlin
+class Outer {
+    inner class inner {
+        fun getOuterReference() : Outer = this@Outer
+    }
+}
+```
+
+#### 4.1.5 봉인된 클래스: 클래스 계층 정의 시 계층 확장 제한
+
+- 봉인된 클래스는 클래스의 외부에 자신을 상속한 클래스를 둘 수 없음
+- when 식에서 sealed 클래스의 모든 하위 클래스를 처리한다면 else 분기 필요X
+```kotlin
+sealed class Expr { // 기반 클래스를 sealed로 봉인
+    class Num(val value: Int) : Expr() // 모든 하위 클래스를 중첩 클래스로 나열
+    class Sum(val left: Expr, val right: Expr) : Expr
+}
+    
+fun eval(e: Expr): Int = 
+    when (e) { // 
+        is Num -> e.value
+        is Sum -> eval(e.right) + eval(e.left)
+    }
+```
+
+### 4.2 뻔하지 않은 생성자와 프로퍼티를 갖는 클래스 선언
+
+#### 4.2.1 클래스 초기화: 주 생성자와 초기화 블록
+
+- primary constructor(주 생성자): 생성자 파라미터를 지정하고 프로퍼티를 정의하는 목적을 갖고 있음 
+- 다음은 User 클래스를 정의하는 세가지 방법임
+```kotlin
+class User constructor(_nickname: String) { // 파라미터가 하나만 있는 주 생성자
+    val nickname: String
+    init {
+        nickname = _nickname // 초기화 블록
+    }
+}
+```
+```kotlin
+class User(_nickname: String) { 
+    val nickname = _nickname // 주 생성자의 파라미터로 초기화된 프로퍼티
+}
+```
+```kotlin
+class User(val nickname: String) // 가장 간결하게 프로피터 생성 
+```
+
+#### 4.2.2 부 생성자: 상위 클래스를 다른 방식으로 초기화
