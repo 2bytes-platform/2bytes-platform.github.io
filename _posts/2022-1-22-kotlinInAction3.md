@@ -26,6 +26,7 @@ println(numbers.max()) // 14
 
 - 원소 사이를 세미콜론으로 구분하고 괄호로 리스트를 둘러싸는 함수를 다음과 같이 생성
 - 함수를 호출 joinToString(list, "; ", "(", ")")을 간략하게 나타내보자
+
 ```kotlin
 fun main() {
 	val list = listOf(1,2,3)
@@ -120,7 +121,9 @@ fun String.lastChar(): Char = get(length - 1) // this 생략 가능
 import strings.lastChar
 import strings.*
 val c = "Kotlin".lastChar()
+```
 
+```kotlin
 import strings.lastChar as last
 val c = "Kotlin".last()
 ```
@@ -132,8 +135,8 @@ fun main() {
     val list = listOf(1,2,3)
     println(joinToString(list, "; ", "(", ")"))
 }
-fun <T> collection<T> join,ToString (
-    separator: String = ", "
+fun <T> collection<T> join.ToString (
+    separator: String = "",
     prefix: String = "",
     postfix: String = ""
 ): String {
@@ -226,7 +229,7 @@ println("12.345-6+A".split('.', '-')) // 확장함수 이용
 #### 3.5.2 정규식과 3중 따옴표로 묶은 문자열
 
 - 3중 따옴표 문자열에서는 역슬래시를 포함한 어떤 문자로 이스케이프 필요없음
-- 
+
 ```kotlin
 fun main() {
 	parsePath("/User/yole/kotlin-book/chapter.adoc")
@@ -244,7 +247,7 @@ fun parsePath(path: String) {
 ```
 ### 3.6 코드 다듬기: 로컬 함수와 확장
 
-- 코틀린에서는 함수에서 추출한 로컬 함수를 원 함수 내부에 중첩시켜 DRY(코드중복)를 지향
+- 코틀린에서는 함수에서 추출한 로컬 함수를 원 함수 내부에 중첩시켜 DRY(코드중복)를 지양
 
 ```kotlin
 class User(val id: Int, val name: String, val address: String)

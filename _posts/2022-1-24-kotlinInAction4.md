@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "📅 Kotlin in Action - 4장 함수 정의와 호출"
+title: "📅 Kotlin in Action - 4장 클래스, 객체, 인터페이스"
 excerpt: "Kotlin in Action 4장 요약 노트입니다."
 subtitle: "Kotlin in Action"
 toc: true
@@ -48,7 +48,8 @@ class Button: Clickable, Focusable {
 
 #### 4.1.2 open, final, abstract 변경자: 기본적으로 final
 
-- 하위 클래스에서 오버라이드하게 의도된 클래스와 메서드가 아니라면 기본적으로 final class로 만들 것
+- 하위 클래스에서 오버라이드하게 의도된 클래스와 메서드가 아니라면 모두 final class로 만들 것 
+- 클래스 상속 및 오버라이드 허용을 원하는 메서드나 프로퍼티 앞에는 open 변경자를 붙일 것
 
 ```kotlin
 open class RichButton: Clickable { // 다른 클래스가 상속 가능하도록 열려있음
@@ -57,6 +58,7 @@ open class RichButton: Clickable { // 다른 클래스가 상속 가능하도록
     override fun click() {} // 상위 클래스 메서드를 오버라이드
 }
 ```
+> **스마트 캐스트 기능을 최대한 이용하기 위해 클래스의 기본적인 상속 가능 상태를 final로 지정**
 
 | 변경자      | 오버라이드 가능 유무             |               설명                |
 |------------|:------------------------|:-------------------------------:|
@@ -65,9 +67,12 @@ open class RichButton: Clickable { // 다른 클래스가 상속 가능하도록
 | `abstract` | 반드시 오버라이드               | 추상 클래스의 멤버에만 사용 가능. 추상 멤버에는 구현X | 
 | `override` | 상위 클래스나 인스턴스의 멤버를 오버라이드 |     오버라이드하는 멤버는 기본적으로 열려있음      | 
 
-#### 4.1.3 가시성 변경자: 기본적으로 공개
+- 추상 클래스에는 구현이 없는 추상 멤버가 있어 하위 클래서에서 오버라이드 필요 
+```kotlin
+abstract class Animated { // 추상클래스, 인스턴스를 만들 수 없음
+    abstract fun animate() // 구현이 없는 추상 함수. 하위 클래스에서 반드시 오버라이드 필요
+    open fun stopAnimating(){} // open으로 오버라이드 허용
+    fun animateTwice(){}
+}
+```
 
-- 코드 기반에 있는 선언에 대한 클래스 외부 접근을 제어
-
-
-#### 4.1.4 내부 클래스와 중첩된 클래스: 기본적으로 중첩 클래스
