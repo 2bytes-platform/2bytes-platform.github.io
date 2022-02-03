@@ -176,7 +176,58 @@ class User(_nickname: String) {
 }
 ```
 ```kotlin
-class User(val nickname: String) // 가장 간결하게 프로피터 생성 
+class User(val nickname: String) // 가장 간결하게 프로퍼티 생성 
 ```
 
 #### 4.2.2 부 생성자: 상위 클래스를 다른 방식으로 초기화
+
+- 자바 상호운용성과 인스턴스를 생성할 때 파라미터 목록이 다른 생성 방법이 여럿 존재하는 경우에 다수의 부생성자 이용
+
+```kotlin
+class MyButton : View {
+	constructor(ctx: Context) : super(ctx){} // super() 키워드를 통해 상위 클래스 생성자를 호출
+	constructor(ctx: Context, attr: AttributeSet) : super(ctx, attr){}
+}
+```
+
+#### 4.2.3 인터페이스에 선언된 프로퍼티 구현
+
+- SubscribingUser는 커스텀 게터로 nickname 프로퍼티를 설정, FacebookUser 클래스는 초기화 식으로 nickname 값을 초기화
+> **SubscribingUser의 nickname은 매번 호출될 때마다 substringBefore를 호출해 계산하는 커스텀 게터 이용, FacebookUser는
+객체 초기화 시 계산한 데이터를 뒷받침하는 필드에 저장했다가 불러오는 방식**
+
+```kotlin
+interface User {
+    val nickname: String // 추상 프로퍼티 선언
+}
+
+class PrivateUser (override val nickname: String) : User
+class SubscribingUser (val email: String): User {
+	override val nickname: String
+	get() = email.substringBefore('@') // 커스텀 게터
+}
+class FacebookUser(val accountId: Int): User {
+	override val nickname = getFacebookName(accountId) // 프로퍼티 초기화 식, getFacebookName 함수는 다른 곳에 선언
+}
+
+println(PrivateUser("88parksw@gmail.com").nickname)
+```
+
+- 인터페이스에는 추상 프로퍼티뿐 아니라 게터와 세터가 있는 프로퍼티를 선언할 수 있음
+```kotlin
+interface User {
+	val email: String
+	val nickname: String
+	  get() = email.substringBefore('@') // 프로퍼티에 뒷받침하는 필드가 없으나 매번 결과를 계산해 돌려줌
+}
+```
+
+#### 4.2.4 게터와 세터에서 뒷받침하는 필드에 접근 
+
+- 특정 값을 저장하되 그 값을 변경하거나 읽을 때마다 정해진 로직을 실행하는 유형의 프로퍼티를 생성
+
+```kotlin
+
+
+
+```

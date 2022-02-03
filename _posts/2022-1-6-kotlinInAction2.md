@@ -163,7 +163,7 @@ fun main(args: Array<String>) {
 ### 2.3 선택 표현과 처리: enum과 when
 #### 2.3.1 선택 표현과 처리 - enum 클래스 정의
 
->enum - 복수의 요소를 나열한다는 점에서 JS의 배열과 유사하지만 프로퍼티나 메소드까지 정의 가능
+> enum - 복수의 요소를 나열한다는 점에서 JS의 배열과 유사하지만 프로퍼티나 메소드까지 정의 가능
 ```kotlin
 enum class Color (
     val r: Int, val g: Int, val b: Int // 상수 프로퍼티 정의

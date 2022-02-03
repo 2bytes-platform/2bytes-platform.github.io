@@ -94,7 +94,6 @@ class Tiger : Animal() {
 }
 ```
 
-
 #### 추상화
 
 - 추상화: 선언부만 있고 기능이 구현되지 않은 추상함수, 추상클래스 두 요소로 구성
@@ -104,30 +103,29 @@ class Tiger : Animal() {
 - 한번의 여러 인터페이스를 상속받아 서브클래스 생성 가능
 
 ```kotlin
-    fun main () {
+fun main () {
     var r = Rabbit()
     r.eat()
     r.sniff()
-    println("${r}")
-    }
-    
-    abstract class Animal { // 추상클래스
+    println("$r")
+}
+
+abstract class Animal { // 추상클래스
     abstract fun eat()
     fun sniff() {
     println("냄시")
     }
-    }
-    
-    class Rabbit : Animal() {
+}
+
+class Rabbit : Animal() {
     override fun eat() {
     println("당근을 먹습니다")
     }
-    }
+}
 ```
 
-
-- 오버라이딩은 이미 구현이 끝난 함수를 서브클래스에서 변경할 때
-- 추상화는 선언만하고 실제 구현은 서브클래스에 일임할 때 
+- 오버라이딩은 이미 구현이 끝난 함수를 서브 클래스에서 변경할 때
+- 추상화는 선언만하고 실제 구현은 서브 클래스에 일임할 때 
 - 인터페이스는 서로 다른 기능들을 여러 개 상속해줘야 할 때 필요 
 
 ```kotlin
