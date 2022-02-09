@@ -152,7 +152,7 @@ fun createRandomRectangle(): Rectangle {
 }
 ```
 
-```
+```kotlin
 pakage.* // 패키지 안의 모든 클래스, 함수, 프로퍼티까지 다 불러옴
 package geometry.example
 import geometry.shapes.createRandomRectangle // 이름으로 함수 import

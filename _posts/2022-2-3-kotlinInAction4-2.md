@@ -31,6 +31,82 @@ class User(val name: String) {
             field = value
         }
 }
-
-
 ```
+
+#### 4.2.5 접근자의 가시성 변경
+
+- 접근자의 가시성은 기본적으로 프로퍼티의 가시성과 같으나 get, set 앞에 가시성 변경자를 추가해서 접근자 가시성 변경 가능
+
+```kotlin
+fun main() {
+	val lengthCounter = LengthCounter()
+	lengthCounter.addWord("Hi!")
+	println(lengthCounter.counter) // 3
+}
+
+class LengthCounter {
+	var counter: Int = 0
+		private set
+	fun addWord(word: String) {
+		counter += word.length
+	}
+}
+```
+
+### 4.3 컴파일러가 생성한 메서드: 데이터 클래스와 클래스 위임
+
+- 코틀린 컴파일러가 데이터 클래스에 유용한 메서드를 자동으로 만들어주는 예와 클래스 위임 패턴을 보여주는 예를 보자
+
+#### 4.3.1 모든 클래스가 정의해야 하는 메서드 
+
+- 클래스에 기본적으로 들어있는 메서드들을 커스터마이징 
+
+```kotlin
+fun main() {
+	val client1 = Client("사샤", 4122)
+    println(client1) // Client(name = 사샤, postalCode=4122)
+}
+
+class Client (val name: String, val postalCode: Int) {
+	override fun toString() = "Client(name = $name, postalCode=$postalCode)"   
+}
+```
+
+- 객체의 동등성: equals(other: Any)
+> 
+> "=="는 원시 타입일 경우 피연산자의 값이 같은지를 비교, 참조 타입인 경우 피연산자의 주소가 같은지를 비교. 코틀린에서 
+> "=="는 내부적으로 equals를 호출해서 객체 비교
+
+```kotlin
+fun main() {
+	val client1 = Client("오현석", 4122)
+    val client2 = Client("오현석", 4122)
+    println(client1 == client2) // false
+}
+
+class Client (val name: String, val postalCode: Int) {
+	override fun toString() = "Client(name = $name, postalCode=$postalCode)"   
+}
+```
+
+```kotlin
+class Client(val name: String, val postalCode: Int) {
+	override fun equals(other: Any?) : Boolean {
+		if (other == null || other !is Client)
+			return false
+		return name == other.name && postalCode == other.postalCode
+	}
+	override fun toString() = "Client(name = $name, postalCode=$postalCode)"
+}
+```
+
+#### 4.3.2 데이터 클래스: 모든 클래스가 정의해야 하는 메소드 자동 생성 
+
+- data라는 변경자를 클래스 앞에 붙이면 필요한 메서드를 컴파일러가 자동으로 만들어줌. 그리고 이러한 클래스를 데이터 클래스라고 함
+- 하기 클래스는 다음과 같은 메서드를 포함. 인스턴스 비교를 위한 equals, 해시 기반 컨테이너에서 키로 사용할 수 있는 hashCode, 클래스의 각 필드를
+선언 순서대로 표시하는 문자열 표현을 만들어 주는 toString 
+
+```kotlin
+data class Client(val name: String, val postalCode: Int) 
+```
+
