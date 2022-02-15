@@ -11,7 +11,20 @@ tags: [Kotlin]
 ---
 
 
-    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -35,7 +48,7 @@ fun main() {
 		println("${family}")
 	}
 
-	val b = mutableListOf(1, 2, 3)
+	val b = mutableListOf(1, 2, 3) ㅠㅍ
 	b.add(3, 5) // add(삽입하고자 하는 idx, value)
 	println(b) // [1, 2, 3, 5]
 
@@ -50,14 +63,108 @@ fun main() {
 }
 ```
 
-#### 문자열을 다루는 법
+#### 문자열 함수 종류
 
-- 
+```kotlin
+fun main() {
+    val test1 = "Test.Kotlin.String"
+    println(test1.length) // 18
+    println(test1.lowercase()) // test.kotlin.string
+    println(test1.uppercase()) // TEST.KOTLIN.STRING
+    
+    val test2 = test1.split(".")
+    println(test2) // [Test, Kotlin, String]
+    println(test2.joinToString()) // Test, Kotlin, String
+    println(test2.joinToString("-")) // Test-Kotlin-String
+    
+    println(test1.substring(0..5)) // Test.K
+    
+    val nullString: String? = null
+    val emptyString = ""
+    val blankString = " "
+    val normalString = "A"
+    
+    println(nullString.isNullOrEmpty()) // true, blank는 비어있는 것으로 취급X
+    println(emptyString.isNullOrEmpty()) // true
+    println(blankString.isNullOrEmpty()) // false
+    println(normalString.isNullOrEmpty()) // false
 
+    println(nullString.isNullOrBlank()) // true 
+    println(emptyString.isNullOrBlank()) // true
+    println(blankString.isNullOrBlank()) // true, blank 상태도 비어있는 것으로 취급
+    println(normalString.isNullOrBlank()) // false
+  
+    val test3 = "Sasha"
+    val test4 = "Lisa"
+    
+    println(test3.startsWith("Sa")) // true
+    println(test4.startsWith("Li")) // true
+    println(test3.endsWith("sa")) // false
+    println(test4.endsWith("Sa")) // false
+    println(test3.contains("as")) // true 
+    println(test4.contains("sa")) // true
+}
+```
 
+#### null 값을 처리하는 방법? 동일한지를 확인하는 방법?
 
+- null 상태로 속성이나 함수를 쓰려고 하면 null pointer exception(null 객체를 참조하면 발생하는 오류)이 발생
+- null check가 없이는 컴파일 되지 않음
 
+- "?.": null safe operator, 참조연산자 실행 전, 객체가 null인지 확인부터하고 객체가 null이라면 뒷구문을 실행X
+- "?:": elvis operator, 객체가 null이 아니라면 그대로 실행하며 반대일 경우 우측의 객체로 대체
+- "!!.": non-null assertion operator, 참조연산자 사용 시 null 여부를 컴파일 시 확인하지 않도록 하여 런타임 시 null pointer
+exception이 나도록 일부로 방치하는 연산자
 
+```kotlin
+fun main() {
+    val a: String? = null
+    println(a?.uppercase()) // null
+    println(a?:"default".uppercase()) // DEFAULT
+    println(a!!.uppercase()) // Exception in thread "main" java.lang.NullPointerException
+}
+```
 
+- null check를 위해 if문 대신 연산자 + scope 함수 사용하면 편리
 
+```kotlin
+fun main() {
+    var a: String? = null
+    a?.run { // null을 체크하기 위해 스코프함수 사용
+        println(uppercase())
+        println(lowercase())
+    }
+}
+```
 
+- 내용의 동일성: heap 상에 주소가 달라도 내용이 같다면 두 객체는 같음 a == b
+- 객체의 동일성: 서로 다른 변수가 메모리상에 동일한 객체를 가르킬 때 a === b
+
+```kotlin
+fun main() {
+    val a = Product("콜라", 1000)
+    val b = Product("콜라", 1000)
+    var c = a
+	var d = Product("사이다", 500)    
+    
+    println(a == b) // true
+    println(a === b) // false 
+    
+    println(a == c) // true
+    println(a === c) // true
+    
+    println(a == d) // false
+    println(a === d) // false
+
+}
+
+class Product(val name: String, val price: Int) {
+    override fun equals(other: Any?): Boolean {
+        if (other is Product) {
+    		return other.name == name && other.price == price 
+        } else {
+            return false
+        }	
+    }
+}
+```
