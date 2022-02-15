@@ -36,7 +36,6 @@ interface Focusable {
 	fun showOff() = println("I'm Focusable!")
 }
 
-
 class Button: Clickable, Focusable {
 	override fun click() = println("I was clicked!")
 	override fun showOff(){ 

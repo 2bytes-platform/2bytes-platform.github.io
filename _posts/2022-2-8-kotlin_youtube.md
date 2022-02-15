@@ -10,32 +10,48 @@ date: 2022-2-8
 tags: [Kotlin]
 ---
 
+#### Generic
 
+- 클래스나 함수에서 사용하는 자료형을 외부에서 지정할 수 있는 기능
+> 캐스팅 이용 시 프로그램 속도를 제한시킬 수 있음
 
+```kotlin
+fun main() {
+    UsingGeneric(A()).doShouting()
+    UsingGeneric(C()).doShouting()
+    
+    doShouting(A()) // 캐스팅 없이 A의 객체 그대로 함수에서 사용
+}
 
+fun <T: A> doShouting(t: T) {
+    t.shout()
+}
 
+open class A {
+    open fun shout() {
+        println("Sasha는 자고 싶습니다!") 
+    }
+}
 
+class C: A() {
+    override fun shout() {
+        println("Lisa는 자고 싶습니다!") 
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+class UsingGeneric<T: A> (val t: T) { // 수퍼클래스를 A로 제한한 제너릭 T를 선언
+    fun doShouting() {
+        t.shout()
+    }
+}
+```
 
 #### 리스트
 
-- List: 데이터를 코드에서 지정한 순서대로 저장해두는 클래스. 데이터를 모아 관리하는 컬렉션 클래스의 서브 클래스 중 가장 단순한 형태. 
+- List: 데이터를 코드에서 지정한 순서대로 저장해두는 클래스. 데이터를 모아 관리하는 컬렉션 클래스의 서브 클래스 중 가장 단순한 형태.
 - 리스트의 2가지 형태  
-List<out T>: 생성 시에 넣은 객체를 대체, 추가, 삭제 할 수 없음
-MutableList<T>: 가능
+  List<out T>: 생성 시에 넣은 객체를 대체, 추가, 삭제 할 수 없음
+  MutableList<T>: 가능
 
 ```kotlin
 fun main() {
@@ -114,7 +130,7 @@ fun main() {
 - "?.": null safe operator, 참조연산자 실행 전, 객체가 null인지 확인부터하고 객체가 null이라면 뒷구문을 실행X
 - "?:": elvis operator, 객체가 null이 아니라면 그대로 실행하며 반대일 경우 우측의 객체로 대체
 - "!!.": non-null assertion operator, 참조연산자 사용 시 null 여부를 컴파일 시 확인하지 않도록 하여 런타임 시 null pointer
-exception이 나도록 일부로 방치하는 연산자
+  exception이 나도록 일부로 방치하는 연산자
 
 ```kotlin
 fun main() {

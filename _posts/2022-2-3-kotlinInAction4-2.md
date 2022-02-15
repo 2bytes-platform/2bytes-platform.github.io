@@ -183,7 +183,7 @@ data class Person(val name: String) {
 
 #### 4.4.2 동반 객체: 팩토리 메서드와 정적 멤버가 들어갈 장소 
 
-- 코틀린은 자바의 static 키워드를 지원하지 않음. 대신 패키지 수준의 최상위 함수와 객체 선언을 활용
+- 코틀린은 자바의 static 키워드를 지원하지 않음. 대신 패키지 수준의 최상위 함수와 객체 선언 활용
 - 하지만 최상위 함수는 private으로 표시된 클래스 비공개 멤버에 접근할 수 없어서, 팩토리 메서드를 이용
 - companion 키워드를 붙여 동반 객체로 지정하면 자바의 정적 메서드 호출 / 필드 사용 구문과 같아짐 
 
@@ -204,7 +204,7 @@ class User private constructor(val nickname: String) {
 
 #### 4.4.3 동반 객체를 일반 객체처럼 사용
 
-- 동반 객체에 이름을 붙이거나, 인터페이스를 상속하거나, 동반 객체 안에 확장 함수와 프로퍼티 정의 가능
+- 클래스 안에 정의되는 동반 객체에 이름을 붙이거나, 인터페이스를 상속하거나, 동반 객체 안에 확장 함수와 프로퍼티 정의 가능
 
 ```kotlin
 class Person(val name: String) {
@@ -218,8 +218,35 @@ interface JSONFactory<T> {
 }
 
 class People(val name: String) {
-	companion object: JSONFactory<Person>
+	companion object: JSONFactory<Person> {
+        override fun fromJSON(jsontext:String): Person
+    }
+}
+```
+
+- 동반 객체 확장: 클래스에 동반 객체가 있으면 그 객체 안에 함수를 정의함으로써 클래스에 대해 호출할 수 있는 확장 함수 생성 가능
+
+```kotlin
+class Person(val firstName: String, val lastName: String) {
+    companion object{} // 비어있는 동반 객체를 선언
 }
 
+fun Person.Companion.fromJSON(json: String): Person {}
 
+val p = Person.fromJSON(json) // 확장 함수 호출
+```
+
+#### 4.4.4 객체 식: 무명 내부 클래스를 다른 방식으로 작성
+
+- 무명 객체는 object 키워드를 사용하여 생성하며, 자바의 무명 내부 클래스를 대신함
+- 객체 식은 무명 객체 안에서 여러 메서드를 오버라이드해야 하는 경우에 훨씬 유용
+> 객체 선언과 달리 무명 객체는 singleton이 아니며 객체 식이 쓰일때 마다 새로운 인스턴스가 생성
+
+```kotlin
+window.addMouseListener {
+    object: MouseAdapter() { // MouseAdapter를 확장하는 무명 객체를 선언
+        override fun mouseClicked(e: MouseEvent) {} // MouseAdapter의 메서드를 오버라이드
+        override fun mouseEntered(e: MouseEvent) {} // MouseAdapter의 메서드를 오버라이드
+    }   
+}
 ```
