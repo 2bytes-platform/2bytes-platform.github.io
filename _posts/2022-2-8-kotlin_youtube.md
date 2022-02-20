@@ -17,8 +17,8 @@ tags: [Kotlin]
 
 ```kotlin
 fun main() {
-    UsingGeneric(A()).doShouting()
-    UsingGeneric(C()).doShouting()
+    UsingGeneric(A()).doShouting() // Sasha는 코틀린에 대해서 더 알고 싶어요!
+    UsingGeneric(C()).doShouting() // Lisa는 인공지능을 더 공부합니다!
     
     doShouting(A()) // 캐스팅 없이 A의 객체 그대로 함수에서 사용
 }
@@ -29,13 +29,13 @@ fun <T: A> doShouting(t: T) {
 
 open class A {
     open fun shout() {
-        println("Sasha는 자고 싶습니다!") 
+        println("Sasha는 코틀린에 대해서 더 알고 싶어요!") 
     }
 }
 
 class C: A() {
     override fun shout() {
-        println("Lisa는 자고 싶습니다!") 
+        println("Lisa는 인공지능을 더 공부합니다!") 
     }
 }
 
@@ -57,14 +57,13 @@ class UsingGeneric<T: A> (val t: T) { // 수퍼클래스를 A로 제한한 제�
 fun main() {
 	val family = listOf("사샤", "리사", "코코")
 
-	println(a) // [사샤, 리사, 코코]
+	println(family) // [사샤, 리사, 코코]
 
-	for(ele in family)
-	{
+	for(ele in family) {
 		println("${family}")
 	}
 
-	val b = mutableListOf(1, 2, 3) ㅠㅍ
+	val b = mutableListOf(1, 2, 3)
 	b.add(3, 5) // add(삽입하고자 하는 idx, value)
 	println(b) // [1, 2, 3, 5]
 
@@ -181,6 +180,49 @@ class Product(val name: String, val price: Int) {
         } else {
             return false
         }	
+    }
+}
+```
+
+#### 중첩 클래스와 내부 클래스 
+
+- 중첩 클래스와 내부 클래스는 클래스 간의 연계성을 표현하여 코드의 가독성 및 작성 편의성을 증대
+- 중첩 클래스: 클래스 서로 간 강하게 연관되어 있다는 의미를 전달하기 위해 만들어진 형식
+- 내부 클래스: 혼자서 객체를 만들 수는 없고, 외부 클래스의 객체가 있어야만 생성과 사용이 가능
+
+```kotlin
+fun main() {
+    Outer.Nested().introduce() // Nested Class
+    
+    val outer = Outer()
+    val inner = outer.Inner()
+    
+    inner.introduceInner() // Inner Class
+    inner.introduceOuter() // Outer Class
+    
+    outer.text = "Changed Outer Class"
+    inner.introduceOuter() // changed Outer Class
+}
+
+class Outer {
+    var text = "Outer Class"
+    
+    class Nested() {
+        fun introduce() {
+            println("Nested Class")
+        }
+    }
+    
+    inner class Inner {
+      var text = "Inner Class"
+
+      fun introduceInner() {
+        println(text)
+      }
+
+      fun introduceOuter() {
+        println(this@Outer.text) // 
+      }
     }
 }
 ```

@@ -147,7 +147,7 @@ class CountingSet<T>(
 
 - 클래스를 정의하면서 동시에 인스턴스(객체)를 생성함
   - object declaration(객체 선언): singleton을 정의하는 방법 중 하나
-- companion object (동반 객체): 인스턴스 메서드는 아니지만 어떤 클래스와 관련 있는 메서드와 팩토리 메서드를 담을 때 쓰임
+- companion object (동반 객체): 인스턴스 메서드는 아니지만 특정 클래스와 관련 있는 메서드와 팩토리 메서드를 담을 때 쓰임
 - 객체 식은 자바의 anonymous inner class (무명 내부 클래스) 대신 쓰임
 
 #### 4.4.1 객체 선언: 싱글턴을 쉽게 만들기 
