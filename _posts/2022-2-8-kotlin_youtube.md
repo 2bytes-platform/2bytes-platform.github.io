@@ -39,7 +39,7 @@ class C: A() {
     }
 }
 
-class UsingGeneric<T: A> (val t: T) { // 수퍼클래스를 A로 제한한 제너릭 T를 선언
+class UsingGeneric<T: A> (val t: T) { // 수퍼 클래스를 A로 제한한 제너릭 T를 선언
     fun doShouting() {
         t.shout()
     }
@@ -104,7 +104,7 @@ fun main() {
     println(blankString.isNullOrEmpty()) // false
     println(normalString.isNullOrEmpty()) // false
 
-    println(nullString.isNullOrBlank()) // true 
+    println(nullString.isNullOrBlank()) // true
     println(emptyString.isNullOrBlank()) // true
     println(blankString.isNullOrBlank()) // true, blank 상태도 비어있는 것으로 취급
     println(normalString.isNullOrBlank()) // false
@@ -113,10 +113,7 @@ fun main() {
     val test4 = "Lisa"
     
     println(test3.startsWith("Sa")) // true
-    println(test4.startsWith("Li")) // true
-    println(test3.endsWith("sa")) // false
     println(test4.endsWith("Sa")) // false
-    println(test3.contains("as")) // true 
     println(test4.contains("sa")) // true
 }
 ```
@@ -151,9 +148,8 @@ fun main() {
     }
 }
 ```
-
 - 내용의 동일성: heap 상에 주소가 달라도 내용이 같다면 두 객체는 같음 a == b
-- 객체의 동일성: 서로 다른 변수가 메모리상에 동일한 객체를 가르킬 때 a === b
+- 객체의 동일성: 서로 다른 변수가 메모리 상에 동일한 객체를 가르킬 때 a === b
 
 ```kotlin
 fun main() {
@@ -184,9 +180,9 @@ class Product(val name: String, val price: Int) {
 }
 ```
 
-#### 중첩 클래스와 내부 클래스 
+#### 중첩 클래스와 내부 클래스
 
-- 중첩 클래스와 내부 클래스는 클래스 간의 연계성을 표현하여 코드의 가독성 및 작성 편의성을 증대
+- 중첩 클래스와 내부 클래스는 클래스 간의 연계성을 표현하여 코드의 가독성 및 작성 편의성을 증대하는데 목적이 있음
 - 중첩 클래스: 클래스 서로 간 강하게 연관되어 있다는 의미를 전달하기 위해 만들어진 형식
 - 내부 클래스: 혼자서 객체를 만들 수는 없고, 외부 클래스의 객체가 있어야만 생성과 사용이 가능
 
