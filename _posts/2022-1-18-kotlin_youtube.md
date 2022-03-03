@@ -19,33 +19,33 @@ tags: [Kotlin]
   - Companion Object: 기존 class 안에 생성하여 인스턴스 간 공용할 수 있는 속성과 함수를 별도 생성
   - Static Member와 비슷 -> 공용으로 사용가능한 속성이나 함수
 
-```kotlin
-fun main() {
-    var a = FoodPoll("짜장")
-    var b = FoodPoll("짬뽕")
-    
-    a.vote()
-    a.vote()
-    a.vote()
-    a.vote()
-    b.vote()
-    
-    println("짜장면의 카운트 수: ${a.count} \n 짬뽕의 카운트 수: ${b.count}")
-}
-
-class FoodPoll (val name: String) {
-    companion object {
-        var total = 0
+    ```kotlin
+    fun main() {
+        var a = FoodPoll("짜장")
+        var b = FoodPoll("짬뽕")
+        
+        a.vote()
+        a.vote()
+        a.vote()
+        a.vote()
+        b.vote()
+        
+        println("짜장면의 카운트 수: ${a.count} \n 짬뽕의 카운트 수: ${b.count}")
     }
-  
-    var count = 0
-  
-    fun vote() {
-        total ++
-        count ++
+    
+    class FoodPoll (val name: String) {
+        companion object {
+            var total = 0
+        }
+      
+        var count = 0
+      
+        fun vote() {
+            total ++
+            count ++
+        }
     }
-}
-```
+    ```
 
 #### 옵저버 패턴
 
