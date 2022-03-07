@@ -227,7 +227,7 @@ val c = {str: String ->
 - with
     - run과 같지만, 인스턴스를 인자로 받는다는 차이
 
-- also (=apply)/let (=run)
+- also (=apply) / let (=run)
     - 'it'을 통해서 인스턴스를 사용
 
 ```kotlin

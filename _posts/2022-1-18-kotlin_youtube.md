@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "📅 Kotlin 강의노트 - 15강까지"
+title: "📅 Kotlin 강의노트 - 20강까지"
 excerpt: "디모의 Kotlin 강좌 요약본입니다 "
 subtitle: "Kotlin youtube lecture"
 toc: true
@@ -103,18 +103,19 @@ class EventPrinter: EventListner {
 매개변수가 다르거나 전혀 다른 동작의 메서드를 정의.** 클래스의 상속관계에서 오는 인스턴스의 호환성을 적극 활용할 수 있는 기능임
 - up/down casting: 하위 인스턴스를 수퍼클래스로 변환하는 행위. 반대의 경우 down-casting이며 as, is 연산자 필요
 - as: 변수를 호환되는 자료형으로 변환 후 반환까지 해주는 캐스팅 연산자
-```kotlin
-var a:Drink = Cola()
-a as Cola
-```
+
+    ```kotlin
+    var a:Drink = Cola()
+    a as Cola
+    ```
 - is: 변수가 자료형에 호환되는지를 먼저 체크한 후에 변환해주는 연산자. 조건문과 같이 쓰임.
-```kotlin
-var a:Drink = Cola()
-if(a is Cola)
-{
-"이 안에서만 a가 콜라"
-}
-```
+
+    ```kotlin
+    var a:Drink = Cola()
+    if(a is Cola) {
+    "이 안에서만 a가 콜라"
+    }
+    ```
 
 ```kotlin
 fun main() {
@@ -125,10 +126,9 @@ fun main() {
    a.drink()
    b.drink()
    
-   if(b is Cola)
-    {
-        b.washDishes()
-    }
+   if(b is Cola){
+     b.washDishes()
+	 }
    
    var c = b as Cola
    c.washDishes()
