@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "📅 Spring 강의노트"
-excerpt: " Spring 핵심 원리에 대한 강의 "
+excerpt: " Spring 핵심 원리에 대한 강의 ②"
 subtitle: "스프링 핵심 원리 - 기본편"
 toc: true
 toc_sticky: true
@@ -24,7 +24,7 @@ tags: [Spring]
 
   - 이름으로 빈 조회: ac.getBean(name: "BeanName", BeanName.class)
   - 이름 없이 타입으로만 조회: ac.getBean(BeanName.class)
-  - 구체 타입으로 조회: ac.getBean(name: "BeanName", BeanNameImpl.class)
+  - 구체 타입으로 조회: ac.getBean(name: "BeanName", BeanNameImpl.class) -> 변경 시 유연성이 떨어짐
   - 동일한 타입이 둘 이상: ac.getBeansOfType(BeanName.class)
 
   - 상속관계: 부모 타입 조회 시, 자식 타입도 함께 조회. 최상위 객체인 'Object' 타입으로 조회 시, 모든 스프링 빈을 조회
@@ -35,7 +35,6 @@ tags: [Spring]
     - 스프링 빈을 관리하고 조회하는 역할 담당 
     - getBean()을 제공하며, 대부분의 기능을 제공  
   
-
   - ApplicationContext: BeanFactory 기능을 모두 상속 받아서 제공하며, 다음과 같은 부가 기능을 제공
     - MessageSource: 메세지 소스를 활용한 국제화 기능
     - EnvironmentalCapable: 로컬, 개발, 운영 등을 구분해서 처리
@@ -59,3 +58,23 @@ tags: [Spring]
     - InitMethodName: 빈을 생성하고, 의존관계를 적용한 뒤에 호출되는 초기화 메서드 명
     - DestroyMethodName: 빈의 생명주기가 끝나서 제거하기 직전에 호출되는 메서드 명
     - Constructor arguments. Properties: 의존관계 주입에서 사용 (자바 설정처럼 팩토리 역할의 빈을 사용하면 없음)
+
+#### 웹 어플리케이션과 싱글톤 패턴
+
+  - 요청이 올때마다 객체를 생성하고 해당 객체가 메모리에 남아있다면 심각한 리소스 낭비 -> 해당 객체가 1개만 생성되고, 공유한다면 해결 가능
+  - 싱글톤 패턴: 클래스의 인스턴스가 오직 **1개**만 생성되는 것을 보장하는 디자인 패턴 -> scope를 private으로 설정
+
+  - 스프링 컨테이너는 기본적으로 싱글톤 패턴으로 객체 생성/관리 가능
+  - 단, 다음과 같은 문제가 있음
+    - 싱글톤 패턴 구현 코드가 많음
+    - DIP 위반
+    - 유연성이 떨어짐
+    - 안티패턴
+  
+  - 싱글톤 컨테이너: 기존 스프링 컨테이너가 해당 역할을 가지고 있으며, 생성하고 관리하는 기능은 싱글톤 레지스트
+  - 하나의 객체 인스턴스를 공유하기 때문에 싱글톤 객체는 상태를 유지하게 설계하면 안됨 -> stateless
+  - **스프링 빈의 필드에 공유 값을 설정하면 큰 장애 발생!**
+
+#### @configuration과 싱글톤
+
+- CGLIB:  

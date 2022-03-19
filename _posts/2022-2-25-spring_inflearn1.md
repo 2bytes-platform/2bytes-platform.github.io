@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "📅 Spring 강의노트"
-excerpt: " Spring 핵심 원리에 대한 강의 "
+excerpt: " Spring 핵심 원리에 대한 강의 ① "
 subtitle: "스프링 핵심 원리 - 기본편"
 toc: true
 toc_sticky: true
