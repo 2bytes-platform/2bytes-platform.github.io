@@ -258,7 +258,7 @@ fun Button.showOff() = println("Lisa")
     ```kotlin
     class User(val id: Int, val name: String, val address: String)
     
-    fun	User.validateBeforeSave() {
+    fun User.validateBeforeSave() {
         fun validate(value: String, fieldName: String) { // 로컬함수 정의
             if(value.isEmpty()) {
                 throw IllegalArgumentException("Can't save user ${id}: " + "empty $fieldName")

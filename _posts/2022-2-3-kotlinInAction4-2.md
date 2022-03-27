@@ -17,7 +17,7 @@ tags: [Kotlin]
 ```kotlin
 fun main() {
     val user = User("Alitciia")
-    user.address = "서울시 송파구 토성로 15길 10-1 바움빌 401호" 
+`    user.address = "안양시 동안구 110-5" 
     println(user) 
     println(user.address)
 }
@@ -46,7 +46,7 @@ fun main() {
 
 class LengthCounter {
 	var counter: Int = 0
-		private set
+		private set // 외부 코드에서 단어 길이릐 합을 마음대로 바꾸지 못하게 하기 위해서 내부에서만 변경 가능케 함
 	fun addWord(word: String) {
 		counter += word.length
 	}
@@ -55,11 +55,11 @@ class LengthCounter {
 
 ### 4.3 컴파일러가 생성한 메서드: 데이터 클래스와 클래스 위임
 
-- 코틀린 컴파일러가 데이터 클래스에 유용한 메서드를 자동으로 만들어주는 예와 클래스 위임 패턴을 보여주는 예를 보자
+- 클래스에 기본적으로 들어있는 메서드들을 오버라이드하여 커스터마이징 가능
 
 #### 4.3.1 모든 클래스가 정의해야 하는 메서드 
 
-- 클래스에 기본적으로 들어있는 메서드들을 커스터마이징 
+- 문자열 표현: toString()
 
 ```kotlin
 fun main() {
@@ -98,6 +98,16 @@ class Client(val name: String, val postalCode: Int) {
 	}
 	override fun toString() = "Client(name = $name, postalCode=$postalCode)"
 }
+```
+
+- 해시 컨테이너: hashCode()
+> JVM 언어에서는 equals()가 true를 반환하는 두 객체는 반드시 같은 hashCode()를 반환해야 함. 두 객체의 id가 같은지를 검사하는 프로세스
+
+```kotlin
+class Client(val name: String, val postalCode: Int) {
+    override fun hashCode(): Int = name.hashCode() * 31 + postalCode
+}
+
 ```
 
 #### 4.3.2 데이터 클래스: 모든 클래스가 정의해야 하는 메소드 자동 생성 
