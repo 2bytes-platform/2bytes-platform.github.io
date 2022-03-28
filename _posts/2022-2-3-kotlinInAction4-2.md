@@ -123,9 +123,9 @@ fun main() {
 
 ### 4.3.3 클래스 위임: By 키워드 사용
 
-- 대규모 객체지향 시스템을 설계할 때 시스템을 취약하기 만드는 문제는 보통 구현 상속(implementation inheritance)에서 발생
-- @(Decorator 패턴): 상속을 허용하지 않는 클래스에 새로운 동작을 추가할 때 쓰이는 방법
-- by 키워드를 이용하여 인터페이스에 대한 구현을 다른 객체에 위임 중이라는 것을 표시
+- 대규모 객체지향 시스템을 설계할 때 시스템을 취약하기 만드는 문제는 보통 구현 상속(implementation inheritance)에서 발생 -> 코틀린은 기본적으로 클래스를 final로 취급
+- @(Decorator 패턴): 상속을 허용하지 않는 클래스에 새로운 동작을 추가할 때 쓰이는 방법. 하지만 구현 코드량이 많고 복잡함
+- 그래서 by 키워드를 이용하여 인터페이스에 대한 구현을 다른 객체에 위임 중이라는 것을 표시
 
 ```kotlin
 class CountingSet<T>(
@@ -145,7 +145,7 @@ class CountingSet<T>(
 
 ### 4.4 object 키워드: 클래스 선언과 인스턴스 생성
 
-- 클래스를 정의하면서 동시에 인스턴스(객체)를 생성함
+- 클래스를 정의하면서 동시에 인스턴스(객체)를 생성
   - object declaration(객체 선언): singleton을 정의하는 방법 중 하나
 - companion object (동반 객체): 인스턴스 메서드는 아니지만 특정 클래스와 관련 있는 메서드와 팩토리 메서드를 담을 때 쓰임
 - 객체 식은 자바의 anonymous inner class (무명 내부 클래스) 대신 쓰임
@@ -194,8 +194,8 @@ fun main() {
     println(subscribingUser.nickname)
 }
 
-class User private constructor(val nickname: String) {
-    companion object {
+class User private constructor(val nickname: String) { // 주 생성자를 비공개로 생성
+    companion object { // 동반 객체 선언 
         fun newSubscribingUser(email: String) = User(email.substringBefore('@'))
         fun newFacebookUser(accountId: Int) = User(getFacebookName(accountId)) // facebook 사용자 id로 사용자를 만드는 팩토리 메서드 
     }
@@ -205,14 +205,23 @@ class User private constructor(val nickname: String) {
 #### 4.4.3 동반 객체를 일반 객체처럼 사용
 
 - 클래스 안에 정의되는 동반 객체에 이름을 붙이거나, 인터페이스를 상속하거나, 동반 객체 안에 확장 함수와 프로퍼티 정의 가능
+- 동반객체: 클래스 안에 정의된 일반 객체
 
 ```kotlin
+fun main() {
+	person = Person.Loader.fromJSON("{name: 'Dmitry'}")
+    println(person.name) // Dmitry
+}
+
 class Person(val name: String) {
 	companion object Loader { // 동반 객체에 이름을 붙임 
         fun fromJSON(jsonText: String): Person = {}
     }
 }
+```
+- 동반 객체에서 인터페이스 구현 가능
 
+```kotlin
 interface JSONFactory<T> {
 	fun fromJSON(jsonText: String): T
 }
@@ -239,14 +248,26 @@ val p = Person.fromJSON(json) // 확장 함수 호출
 #### 4.4.4 객체 식: 무명 내부 클래스를 다른 방식으로 작성
 
 - 무명 객체는 object 키워드를 사용하여 생성하며, 자바의 무명 내부 클래스를 대신함
+- 코틀린 객체 식은 다수의 인터페이스 구현, scope 내 변수 변경할 수 있는 등 자바보다 더 많은 기능 제공
 - 객체 식은 무명 객체 안에서 여러 메서드를 오버라이드해야 하는 경우에 훨씬 유용
 > 객체 선언과 달리 무명 객체는 singleton이 아니며 객체 식이 쓰일때 마다 새로운 인스턴스가 생성
 
 ```kotlin
+// 무명 객체로 이벤트 리스너 구현하기
 window.addMouseListener {
-    object: MouseAdapter() { // MouseAdapter를 확장하는 무명 객체를 선언
+    object: MouseAdapter() { // MouseAdapter를 확장하는 무명 객체 선언
         override fun mouseClicked(e: MouseEvent) {} // MouseAdapter의 메서드를 오버라이드
         override fun mouseEntered(e: MouseEvent) {} // MouseAdapter의 메서드를 오버라이드
     }   
+}
+
+// 무명 객체 안에서 로컬 변수 사용
+fun countClicks(window: Window) {
+  var clickCount = 0
+  window.addMouseListener(object : MouseAdapter() { 
+      override fun mouseClicked(e: MouseEvent) {
+          clickCount ++
+      }
+  })
 }
 ```
