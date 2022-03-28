@@ -115,6 +115,7 @@ fun TalkativeButton.giveSpeech() { //public 함수인 giveSpeech 안에서 inter
 #### 4.1.4 내부 클래스와 중첩된 클래스: 기본적으로 중첩 클래스
 
 - 클래스 안에 다른 클래스 선언이 가능하며 도우미 클래스를 캡슐화하거나 코드 정의를 사용하는 곳 근처에 두고 싶을 때 유용
+
 ```kotlin
 interface State: Serializable
 interface View {
@@ -129,7 +130,9 @@ class Button : View {
     class ButtonState: State {}
 }
 ```
+
 - Inner 클래스 안에서 Outer 클래스의 참조에 접근하는 방법은 다음과 같다
+
 ```kotlin
 class Outer {
     inner class inner {
@@ -141,7 +144,8 @@ class Outer {
 #### 4.1.5 봉인된 클래스: 클래스 계층 정의 시 계층 확장 제한
 
 - 봉인된 클래스는 클래스의 외부에 자신을 상속한 클래스를 둘 수 없음
-- when 식에서 sealed 클래스의 모든 하위 클래스를 처리한다면 else 분기 필요X
+- when 식에서 sealed 클래스의 모든 하위 클래스를 처리한다면 else 분기 필요 X
+
 ```kotlin
 sealed class Expr { // 기반 클래스를 sealed로 봉인
     class Num(val value: Int) : Expr() // 모든 하위 클래스를 중첩 클래스로 나열
