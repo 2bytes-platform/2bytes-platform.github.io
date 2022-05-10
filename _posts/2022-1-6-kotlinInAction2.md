@@ -1,4 +1,4 @@
-ㅌ---
+---
 layout: post
 title: "📅 Kotlin in Action - 2장"
 excerpt: "Kotlin in Action 2장 요약 노트입니다."
