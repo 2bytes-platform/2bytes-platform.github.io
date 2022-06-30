@@ -19,7 +19,6 @@ tags: [Kotlin]
  - 함수형 프로그래밍: 함수를 값처럼 다루는 접근 방법을 택하여 이벤트 핸들러 같은 일련의 동작을 수행
   
  - java에서의 이벤트 리스너 구현
-
   ```java
     button.setOnClickListener(new OnClicklistener() {
 	  @Override
@@ -118,7 +117,9 @@ tags: [Kotlin]
 
   - 함수가 반환되면 스코프 내 로컬 변수의 생명 주기는 끝남. 하지만 포획한 변수가 있는 람다를 저장해서 함수가 끝난 뒤에 실행해도 포획한 변수를
     읽거나 쓸 수 있음 -> 파이널이 아닌 변수를 포획한 경우, 변수를 특별한 래퍼로 감싸서 래퍼에 대한 참조를 람다 코드와 함께 저장
-   
+  
+  > 람다를 이벤트 핸들러나 다른 비동기적으로 실행되는 코드로 활용하는 경우, 함수 호출이 끝난 다음에 로컬 변수가 변경될 수 있음
+
   ```kotlin
   fun main() {
       val res = listOf("200 OK", "418 I'm a teapot", "500 Internal Server Error", "503 Service Unavailable")
@@ -138,61 +139,65 @@ tags: [Kotlin]
 		}
   }
   ```
-    
-> 람다를 이벤트 핸들러나 다른 비동기적으로 실행되는 코드로 활용하는 경우, 함수 호출이 끝난 다음에 로컬 변수가 변경될 수 있음
 
 #### 5.1.5 멤버 참조
 
-- 이미 함수로 선언된 코드를 값으로 바꾸기 위해서 이중 콜론(::) 이용
-
+- member reference (멤버참조): 이중 콜론(::)을 사용하여 함수를 값으로 변경하는 식. 프로퍼티나 메서드를 단 하나만 호출
+  
 ```kotlin
-val getAge = Person :: age
-val getAge = { person: Person -> person.age } // 멤버 참조 뒤세는 괄호를 넣지 말자
+val getAge = Person ::age
 ```
 
-- 최상위에 선언된 함수나 프로퍼티 참조 가능
+- 더 간략하게 표현 
+```kotlin
+val getAge = { person: Person -> person.age }
+```
+    
+- 멤버 참조는 그 멤버를 호출하는 람다와 같은 타입이므로 다음과 같이 자유롭게 기재 가능
+
+  ```kotlin
+  people.maxBy(Person:age)
+  people.maxBy{ p -> p.age }
+  people.maxBy{ it.age }
+  ```
+
+  - 멤버 참조는 최상위에 선언된 '다른 클래스의 멤버가 아닌' 함수나 프로퍼티를 참조 가능  
+  
+    ```kotlin
+    fun sayHello() = println("Hello!")
+    run(::sayHello) // Hello!
+    ```  
+
+  - 생성자 참조를 사용하면 클래스 생성 작업을 연기하거나 저장 가능
 
 ```kotlin
-fun salute() = println("Hi!")
-run(::salute) // Hi!
+data class Person(val name: String, val age: Int)
+val createPerson = ::Person // "Person"의 인스턴스를 만드는 동작을 값으로 저장
+val p = createPerson("Alice", 29)
+
+fun Person.isAdult() = age >= 21 // 확장 함수
+val predicate = Person::isAdult 
 ```
 
-- 람다가 인자가 여럿인 다른 함수한테 작업을 위임하는 경우 람다를 정의하지 않고 직접 위임 함수에 대한 참조를 제공
+### 5.2 컬렉션 함수형 API
+
+#### 5.2.1 필수적인 함수: filter와 map
+
+- filter: 입력 컬렉션의 원소 중에서 주어진 술어(predicate: boolean 값 반환 함수)를 만족하는 원소를 모아놓은 새로운 컬렉션
+
+   ```kotlin
+   fun main() {
+       data class Person(val name: String, val age: Int)
+       val people = listOf(Person("Sasha", 30), Person("Coco", 3))
+       println(people.filter { it.age >= 30 }) // [Person(name=Sasha, age=30)]
+   }
+   ```
+   
+- map: 주어진 람다를 컬레션의 각 원소에 적용한 결과를 모아서 새 컬렉션 생성
 
 ```kotlin
-val action = { person: Person, message: String -> 
-    sendEmail(person, message)
+fun main() {
+    val list = listOf(1,2,3,4)
+    println(list.map { it * it }) // [1, 4, 9, 16] 
 }
-val nextAction = ::sendEmail
 ```
-
-- 생성자 참조: 클래스 생성 작업을 연기하거나 저장할 수 있음
-
-```kotlin
-data class Person (val name: String, val age: Int)
-val createPerson = ::Person
-val p = createPerson("Alice, 29")
-println(p) // Person(name=Alice, age=29)
-```
-
-- 확장 함수도 멤버 함수와 똑같은 방식으로 참조 가능
-
-```kotlin
-fun Person.isAdult() = age >= 21 
-val predicate = Person::isAdult // 멤버 참조 구문을 사용해 확장 함수에 대한 참조를 얻음
-```
-
-- 바운드 멤버 참조: 멤버 참조를 생성할 때 클래스 인스턴스를 함께 저장한 다음, 나중에 그 인스터스에 대해 멤버 호출. 따라서 호출 시 수신 대상 객체를 별도로 지정해
-줄 필요 없음
-
-```kotlin
-// 기존 방식
-val p = Person ("Sasha", 35)
-val personAgeFunction = Person::age
-println(personAgeFunction) // 35
-
-// kotlin 1.1
-val sashaAgeFunction = p::age
-println(sashaAgeFunction())
-```
-

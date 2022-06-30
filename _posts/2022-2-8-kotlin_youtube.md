@@ -188,37 +188,35 @@ class Product(val name: String, val price: Int) {
 
 ```kotlin
 fun main() {
-    Outer.Nested().introduce() // Nested Class
-    
-    val outer = Outer()
-    val inner = outer.Inner()
-    
-    inner.introduceInner() // Inner Class
-    inner.introduceOuter() // Outer Class
-    
-    outer.text = "Changed Outer Class"
-    inner.introduceOuter() // changed Outer Class
+  Outer.Nested().introduce() // "Nested Class"
+
+  val outer = Outer()
+  val inner = outer.Inner()
+
+  inner.introduceInner() // "Inner Class"
+  inner.introduceOuter() // "Outer Class"
+
 }
 
 class Outer {
-    var text = "Outer Class"
-    
-    class Nested() {
-        fun introduce() {
-            println("Nested Class")
-        }
-    }
-    
-    inner class Inner {
-      var text = "Inner Class"
+  var text = "Outer Class"
 
-      fun introduceInner() {
-        println(text)
-      }
-
-      fun introduceOuter() {
-        println(this@Outer.text) // 
-      }
+  class Nested() {
+    fun introduce() {
+      println("Nested Class")
     }
+  }
+
+  inner class Inner {
+    var text = "Inner Class"
+
+    fun introduceInner() {
+      println(text)
+    }
+
+    fun introduceOuter() {
+      println(this@Outer.text)
+    }
+  }
 }
 ```

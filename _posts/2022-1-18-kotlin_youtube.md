@@ -105,7 +105,7 @@ class EventPrinter: EventListner {
 - as: 변수를 호환되는 자료형으로 변환 후 반환까지 해주는 캐스팅 연산자
 
     ```kotlin
-    var a:Drink = Cola()
+    var a: Drink = Cola()
     a as Cola
     ```
 - is: 변수가 자료형에 호환되는지를 먼저 체크한 후에 변환해주는 연산자. 조건문과 같이 쓰임.
