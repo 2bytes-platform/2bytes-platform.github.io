@@ -17,7 +17,7 @@ tags: [Kotlin]
 ```kotlin
 fun main() {
     val user = User("Alitciia")
-`    user.address = "안양시 동안구 110-5" 
+    user.address = "안양시 동안구 110-5" 
     println(user) 
     println(user.address)
 }
@@ -130,6 +130,9 @@ fun main() {
       Client(name = 사샤, postalCode = 4000)
 }
 ```
+
+> 예전 JPA 엔티티를 data class로 작성했지만, 상속이 까다로운 문제로 인해 일반 class로 변경 
+> 
 
 ### 4.3.3 클래스 위임: By 키워드 사용
 
