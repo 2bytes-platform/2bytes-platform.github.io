@@ -19,6 +19,7 @@ tags: [Kotlin]
  - 함수형 프로그래밍: 함수를 값처럼 다루는 접근 방법을 택하여 이벤트 핸들러 같은 일련의 동작을 수행
   
  - java에서의 이벤트 리스너 구현
+
   ```java
     button.setOnClickListener(new OnClicklistener() {
 	  @Override
@@ -26,6 +27,7 @@ tags: [Kotlin]
     }
   ```
   - 코틀린에서의 이벤트 리스너 구현 
+
   ```kotlin
     button.setOnClickListener{}
   ```
@@ -141,7 +143,56 @@ tags: [Kotlin]
 
 #### 5.1.5 멤버 참조
 
-- 함수를 값으로 바꾸기 위해서 이중 콜론(::)을 이용
+- 이미 함수로 선언된 코드를 값으로 바꾸기 위해서 이중 콜론(::) 이용
+
 ```kotlin
-val getAge = Person ::age
+val getAge = Person :: age
+val getAge = { person: Person -> person.age } // 멤버 참조 뒤세는 괄호를 넣지 말자
 ```
+
+- 최상위에 선언된 함수나 프로퍼티 참조 가능
+
+```kotlin
+fun salute() = println("Hi!")
+run(::salute) // Hi!
+```
+
+- 람다가 인자가 여럿인 다른 함수한테 작업을 위임하는 경우 람다를 정의하지 않고 직접 위임 함수에 대한 참조를 제공
+
+```kotlin
+val action = { person: Person, message: String -> 
+    sendEmail(person, message)
+}
+val nextAction = ::sendEmail
+```
+
+- 생성자 참조: 클래스 생성 작업을 연기하거나 저장할 수 있음
+
+```kotlin
+data class Person (val name: String, val age: Int)
+val createPerson = ::Person
+val p = createPerson("Alice, 29")
+println(p) // Person(name=Alice, age=29)
+```
+
+- 확장 함수도 멤버 함수와 똑같은 방식으로 참조 가능
+
+```kotlin
+fun Person.isAdult() = age >= 21 
+val predicate = Person::isAdult // 멤버 참조 구문을 사용해 확장 함수에 대한 참조를 얻음
+```
+
+- 바운드 멤버 참조: 멤버 참조를 생성할 때 클래스 인스턴스를 함께 저장한 다음, 나중에 그 인스터스에 대해 멤버 호출. 따라서 호출 시 수신 대상 객체를 별도로 지정해
+줄 필요 없음
+
+```kotlin
+// 기존 방식
+val p = Person ("Sasha", 35)
+val personAgeFunction = Person::age
+println(personAgeFunction) // 35
+
+// kotlin 1.1
+val sashaAgeFunction = p::age
+println(sashaAgeFunction())
+```
+
