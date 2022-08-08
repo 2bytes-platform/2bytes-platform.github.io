@@ -111,10 +111,10 @@ tags: [JPA]
 #### 필드와 컬럼 맵핑
 
   - @Transient: 메모리에서만 임시로 사용 
-  - @Column: nullable., insertable, updatable
+  - @Column: nullable, insertable, updatable
   - @Lob: 대용량의 데이터 타입 BLOB, CLOB
   - @Unique: @Table(uniqueContraints)로 보통 사용
-  - @Enumerated:  String은 이름을 DB에 저장, Ordinal은 enum의 순서를 DB에 저장하며 사용 시, 기존 데이터와 호환이 되지 않아 운영상의 위험 존재. String을 쓰자
+  - @Enumerated: String은 이름을 DB에 저장, Ordinal은 enum의 순서를 DB에 저장하며 사용 시, 기존 데이터와 호환이 되지 않아 운영상의 위험 존재. String을 쓰자
   - Temporal: **deprecated**, LocalDate, LocalDateTime 사용
 
 #### 기본 키 맵핑

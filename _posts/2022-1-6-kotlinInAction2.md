@@ -200,7 +200,7 @@ tags: [Kotlin]
     // when 분기 조건에 여러 다른 객체 사용하기
     fun mix(c1: Color, c2: Color) = 
         when (setof(c1,c2)) {
-            setOf(RED, YELLOW) -> ORANGE ㅌ
+            setOf(RED, YELLOW) -> ORANGE 
             setOf(YELLOW, BLUE) -> GREEN
             setOf(BLUE, VOILET) -> INDIGO
             else -> throw Exception("FUCKED")
@@ -240,7 +240,7 @@ tags: [Kotlin]
     }
     ```
 
-#### 2.3.5 스마트 캐스트: 타입 검사와 타입 캐스를 조합
+#### 2.3.5 스마트 캐스트: 타입 검사와 타입 캐스트를 조합
 
   - 스마트캐스트: 굳이 원하는 타입으로 캐스팅(형변환) 하지 않더라도, 컴파일러가 알아서 캐스팅 해주는 것
 
